@@ -1,0 +1,7 @@
+data/
+lib/
+output/
+__pycache__/
+qsub/
+commonInclude.hpp.gch
+nohup*.out
