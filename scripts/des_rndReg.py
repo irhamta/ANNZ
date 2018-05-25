@@ -140,8 +140,8 @@ if glob.annz["doGenInputTrees"]:
     
     # some random weird choice for [weightInp_wgtKNN, weightRef_wgtKNN] in this example, just to get different
     # distributions for the input and reference samples, so that we have something to calculate weights for...
-#    glob.annz["weightInp_wgtKNN"]      = "(emag_i<0.7)*1 + (emag_i>=0.7)/emag_i"
-#    glob.annz["weightRef_wgtKNN"]      = "(emag_i<0.7)*1 + (emag_i>=0.7)/emag_i"
+    glob.annz["weightInp_wgtKNN"]      = "(emag_i<=1.0)*1 + (emag_i>1.0)/emag_i"
+    glob.annz["weightRef_wgtKNN"]      = "(emag_i<=1.0)*1 + (emag_i>1.0)/emag_i"
 
     glob.annz["weightVarNames_wgtKNN"] = "mag_g;mag_r;mag_i;mag_z;mag_Y;g_r;r_i;i_z;z_Y"
 
@@ -150,11 +150,11 @@ if glob.annz["doGenInputTrees"]:
     # glob.annz["weightVarNames_wgtKNN"] = "(MAG_U-MAG_G)*MAG_I/MAG_Z;MAG_U;MAG_G;MAG_R;MAG_I;MAG_Z"
 
     # optional parameters (may leave empty as default value):
-    glob.annz["sampleFracInp_wgtKNN"]  = 0.99                                          # fraction of dataset to use (positive number, smaller or equal to 1)
-    glob.annz["sampleFracRef_wgtKNN"]  = 0.95                                          # fraction of dataset to use (positive number, smaller or equal to 1)
+    glob.annz["sampleFracInp_wgtKNN"]  = 1                                         # fraction of dataset to use (positive number, smaller or equal to 1)
+    glob.annz["sampleFracRef_wgtKNN"]  = 1                                          # fraction of dataset to use (positive number, smaller or equal to 1)
     glob.annz["outAsciiVars_wgtKNN"]   = "object_id"                                   # write out additional variable to the output file
 #    glob.annz["weightRef_wgtKNN"]      = "(emag_i<0.7)*1 + (emag_i>=0.7)/emag_i"      # down-weight objects with high emag_i
-#    glob.annz["cutRef_wgtKNN"]         = "emag_i<1.0"                                 # only use objects which have small emag_i
+    glob.annz["cutRef_wgtKNN"]         = "emag_i<2.0"                                 # only use objects which have small emag_i
     glob.annz["doWidthRescale_wgtKNN"] = True
 
     # - trainTestTogether_wgtKNN
@@ -189,7 +189,7 @@ if glob.annz["doTrain"]:
     # --------------------------------------------------------------------------------------------------
     if   nMLMnow%3 == 0: glob.annz["inputVariables"] = "mag_g;mag_r;mag_i;mag_z;mag_Y;g_r;r_i;i_z;z_Y"
     elif nMLMnow%3 == 1: glob.annz["inputVariables"] = "mag_g;mag_r;mag_i;mag_z;g_r;r_i;i_z"
-    elif nMLMnow%3 == 2: glob.annz["inputVariables"] = "mag_g;mag_r;mag_i;mag_z;mag_Y"
+    elif nMLMnow%3 == 2: glob.annz["inputVariables"] = "mag_g;mag_r;mag_i;mag_z"
 
     # --------------------------------------------------------------------------------------------------
     # inputVarErrors -
@@ -282,11 +282,13 @@ if glob.annz["doTrain"]:
     # --------------------------------------------------------------------------------------------------
     if nMLMnow == 0:
       # set some nonsensical cuts and weights for illustration for one of the MLMs:
-      glob.annz["userCuts_train"]    = glob.annz["userCuts_valid"]    = ""
-      glob.annz["userWeights_train"] = glob.annz["userWeights_valid"] = ""
+      glob.annz["userCuts_train"]    = "mag_i < 24"
+      glob.annz["userCuts_valid"]    = "mag_i < 24"
+      glob.annz["userWeights_train"] = "(emag_i<=1.0)*1 + (emag_i>1.0)/emag_i"
+      glob.annz["userWeights_valid"] = "(emag_i<=1.0)*1 + (emag_i>1.0)/emag_i"
     else:
-      glob.annz["userCuts_train"]    = glob.annz["userCuts_valid"]    = ""
-      glob.annz["userWeights_train"] = glob.annz["userWeights_valid"] = ""
+      glob.annz["userCuts_train"]    = glob.annz["userCuts_valid"]    = "mag_i < 24"
+      glob.annz["userWeights_train"] = glob.annz["userWeights_valid"] = "(emag_i<=1.0)*1 + (emag_i>1.0)/emag_i"
 
     # --------------------------------------------------------------------------------------------------
     # bias-correction procedure on MLMs -
@@ -430,7 +432,7 @@ if glob.annz["doOptim"] or glob.annz["doEval"]:
   #     the scatter (max_sigma68_PDF), bias (max_bias_PDF) or outlier-fraction (max_frac68_PDF) of an
   #     MLM which may be included in the PDF created in randomized regression
   # --------------------------------------------------------------------------------------------------
-  glob.annz["max_sigma68_PDF"] = 0.07
+  glob.annz["max_sigma68_PDF"] = 0.08
   glob.annz["max_bias_PDF"]    = 0.01
   glob.annz["max_frac68_PDF"]  = 0.10
 
