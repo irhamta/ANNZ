@@ -16,7 +16,7 @@ from scripts.helperFuncs import *
 # ---------------------------------------------------------------------------------------------------
 subType = 0
 if subType == 0:
-  cmndBase   = "python scripts/des_rndReg.py --randomRegression"     ; optimType = "optimize" ; nTrainJobs = 100
+  cmndBase   = "python scripts/hsc_rndReg.py --randomRegression"     ; optimType = "optimize" ; nTrainJobs = 100
 else:
   Assert("Unknown subType...",False)
 

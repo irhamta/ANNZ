@@ -24,7 +24,7 @@ log.info(whtOnBlck(" - "+time.strftime("%d/%m/%y %H:%M:%S")+" - starting ANNZ"))
 #   - PLEASE ALSO INSPECT generalSettings(), WHICH HAS BEEN RUN AS PART OF init(), FOR MORE OPTIONS
 # --------------------------------------------------------------------------------------------------
 # outDirName - set output directory name
-glob.annz["outDirName"] = "DES_randReg"
+glob.annz["outDirName"] = "HSC_randReg"
 
 # nMLMs - the number of random MLMs to generate - for running the example,
 # we set nMLMs at a small value, but this should be >~ 50 for production
@@ -34,7 +34,7 @@ glob.annz["nMLMs"]        = 100
 # minValZ,maxValZ - the minimal and maximal values of the target variable (zTrg)
 glob.annz["zTrg"]       = "Z"
 glob.annz["minValZ"]    = 0.0
-glob.annz["maxValZ"]    = 1.5
+glob.annz["maxValZ"]    = 3.0
 
 # set the number of near-neighbours used to compute the KNN error estimator
 glob.annz["nErrKNN"]    = 90 # should be around ~100
@@ -84,12 +84,12 @@ if glob.annz["doGenInputTrees"]:
   # splitTypeTrain - list of files for training. splitTypeTest - list of files for testing
   if   inFileOpt == 0:
     glob.annz["splitType"]       = "byInFiles"
-    glob.annz["splitTypeTrain"]  = "DES.train"
-    glob.annz["splitTypeTest"]   = "DES.test"
+    glob.annz["splitTypeTrain"]  = "HSC.train"
+    glob.annz["splitTypeTest"]   = "HSC.test"
 
   elif inFileOpt == 1:
     glob.annz["splitType"]       = "random" # "serial", "blocks" or "random"
-    glob.annz["inAsciiFiles"]    = "DES.train;DES.test"
+    glob.annz["inAsciiFiles"]    = "HSC.train;HSC.test"
 
   else:
     inFileOpt("Unsupported...",False)
@@ -139,7 +139,7 @@ if glob.annz["doGenInputTrees"]:
     glob.annz["useWgtKNN"]             = True
     glob.annz["minNobjInVol_wgtKNN"]   = 50
  
-    glob.annz["inAsciiFiles_wgtKNN"]   = "DES.target"
+    glob.annz["inAsciiFiles_wgtKNN"]   = "HSC.target"
     glob.annz["inAsciiVars_wgtKNN"]    = "I:object_id;F:mag_g;F:mag_r;F:mag_i;F:mag_z;F:mag_Y;F:emag_g;F:emag_r;F:emag_i;F:emag_z;F:emag_Y;F:g_r;F:r_i;F:i_z;F:z_Y;F:eg_r;F:er_i;F:ei_z;F:ez_Y"
     
     # some random weird choice for [weightInp_wgtKNN, weightRef_wgtKNN] in this example, just to get different
@@ -194,7 +194,7 @@ if glob.annz["doTrain"]:
     # --------------------------------------------------------------------------------------------------
     if   nMLMnow%3 == 0: glob.annz["inputVariables"] = "mag_g;mag_r;mag_i;mag_z;mag_Y;g_r;r_i;i_z;z_Y"
     elif nMLMnow%3 == 1: glob.annz["inputVariables"] = "mag_g;mag_r;mag_i;mag_z;g_r;r_i;i_z"
-    elif nMLMnow%3 == 2: glob.annz["inputVariables"] = "mag_g;mag_r;mag_i;mag_z;mag_Y;g_r;r_i;i_z;z_Y"
+    elif nMLMnow%3 == 2: glob.annz["inputVariables"] = "mag_g;mag_r;mag_i;mag_z"
 
     # --------------------------------------------------------------------------------------------------
     # inputVarErrors -
@@ -435,9 +435,9 @@ if glob.annz["doOptim"] or glob.annz["doEval"]:
   #     the scatter (max_sigma68_PDF), bias (max_bias_PDF) or outlier-fraction (max_frac68_PDF) of an
   #     MLM which may be included in the PDF created in randomized regression
   # --------------------------------------------------------------------------------------------------
-  glob.annz["max_sigma68_PDF"] = 0.07
-  glob.annz["max_bias_PDF"]    = 0.01
-  glob.annz["max_frac68_PDF"]  = 0.10
+  glob.annz["max_sigma68_PDF"] = 0.25
+  glob.annz["max_bias_PDF"]    = 0.02
+  glob.annz["max_frac68_PDF"]  = 0.20
 
 
   # --------------------------------------------------------------------------------------------------
@@ -454,7 +454,7 @@ if glob.annz["doOptim"] or glob.annz["doEval"]:
 
     # inDirName,inAsciiFiles - directory with files to make the calculations from, and list of input files
     glob.annz["inDirName"]      = "data/"
-    glob.annz["inAsciiFiles"]   = "DES.target"
+    glob.annz["inAsciiFiles"]   = "HSC.target"
     # inAsciiVars - list of parameters in the input files (doesn't need to be exactly the same as in doGenInputTrees, but must contain all
     #               of the parameers which were used for training)
     glob.annz["inAsciiVars"]    = "I:object_id;F:mag_g;F:mag_r;F:mag_i;F:mag_z;F:mag_Y;F:emag_g;F:emag_r;F:emag_i;F:emag_z;F:emag_Y;F:g_r;F:r_i;F:i_z;F:z_Y;F:eg_r;F:er_i;F:ei_z;F:ez_Y"
