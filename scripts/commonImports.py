@@ -3,9 +3,9 @@ import os,logging
 # --------------------------------------------------------------------------------------------------
 # if [useDefinedROOTSYS == False], rootHome overrides the predefined environmental variable, $ROOTSYS,
 # if [useDefinedROOTSYS == True] and $ROOTSYS is defined, then rootHome will be ignored - see initROOT() in helperFuncs.py
-useDefinedROOTSYS = False
+useDefinedROOTSYS = True
 # if set, rootHome must be the absolute path to the directory where ROOT is installed
-rootHome          = "/home/ade/root"
+rootHome          = "/home/irham/root"
 # --------------------------------------------------------------------------------------------------
 
 pars         = dict()
